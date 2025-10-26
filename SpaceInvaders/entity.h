@@ -1,0 +1,45 @@
+#pragma once
+#ifndef ENTITY_H
+#define ENTITY_H
+
+#include <stdio.h>
+#include <stdint.h>
+#include <string>
+
+#define MAX_ENTITIES
+
+static GameState* gameState;
+
+typedef struct GameState
+{
+	bool initialized;
+	Entity[MAX_ENTITIES];
+	uint64_t generatedEntityID;
+	uint64_t entityTop;
+	std::string worldName;
+	EntityBase playerHandle;
+}GameState;
+
+typedef struct EntityBase
+{
+	int index;
+	int id;
+}EntityBase;
+
+typedef enum EntityType
+{
+	undefined,
+	player,
+}EntityType;
+
+typedef struct Entity
+{
+	bool allocated;
+	EntityBase eBase;
+	EntityType eType;
+}Entity;
+
+
+EntityBase* getEntityArray();
+
+#endif

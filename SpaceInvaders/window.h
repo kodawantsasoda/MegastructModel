@@ -20,9 +20,9 @@ const Rectangle VIRTUAL_RES_RECT = { 0.0f, 0.0f, (float)VIRTUAL_SCREEN_WIDTH, (f
 const Vector2 VIRTUAL_RES_BOUNDS = { (float)VIRTUAL_SCREEN_WIDTH, (float)VIRTUAL_SCREEN_HEIGHT };
 const Vector2 ZERO_POS{ 0,0 };
 
-typedef struct Window Window;
+//typedef struct Window Window;
 
-struct Window 
+typedef struct Window 
 {
 	//this is the "canvas" we will be rendering to, and the initial design resolution for our application
 	RenderTexture2D virtualCanvas;
@@ -32,7 +32,7 @@ struct Window
 
 	Vector2 mousePos{ 0, 0 };
 	Vector2 virtualMousePos{ 0, 0 };
-};
+}Window;
 
 Window* WindowInit();
 void WindowFree(Window* win);
