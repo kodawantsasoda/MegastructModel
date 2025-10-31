@@ -6,19 +6,7 @@
 #include <stdint.h>
 #include <string>
 
-#define MAX_ENTITIES
-
-static GameState* gameState;
-
-typedef struct GameState
-{
-	bool initialized;
-	Entity[MAX_ENTITIES];
-	uint64_t generatedEntityID;
-	uint64_t entityTop;
-	std::string worldName;
-	EntityBase playerHandle;
-}GameState;
+const int MAX_ENTITIES = 50;
 
 typedef struct EntityBase
 {
@@ -39,6 +27,19 @@ typedef struct Entity
 	EntityType eType;
 }Entity;
 
+typedef struct GameState
+{
+	bool initialized;
+	Entity allEntities[MAX_ENTITIES];
+	uint64_t generatedEntityID;
+	uint64_t entityTop;
+	std::string worldName;
+	EntityBase playerHandle;
+}GameState;
+
+static GameState* gameState;
+
+Entity* CreateEntity(EntityType &type);
 
 EntityBase* getEntityArray();
 
