@@ -39,8 +39,10 @@ typedef struct GameState
 
 static GameState* gameState;
 
-Entity* CreateEntity(EntityType &type);
+Entity* CreateEntity(EntityType type);
+void DestroyEntity(Entity* entity);
+EntityBase AttachedEntity(Entity* base);
 
-EntityBase* getEntityArray();
+//EntityBase* getEntityArray();
 
 #endif

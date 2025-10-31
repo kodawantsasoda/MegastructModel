@@ -42,3 +42,20 @@ Entity* CreateEntity(EntityType type)
 		return entityUpdate;
 	}
 }
+
+//dereferencing magic
+void DestroyEntity(Entity* entity)
+{
+	*entity = Entity{};
+}
+
+EntityBase LinkedEntity(Entity* entity)
+{
+	return entity->eBase;
+}
+
+//to do.....
+Entity* LinkedBaseEntity(EntityBase eBase)
+{
+	if (eBase == EntityBase{})
+}
