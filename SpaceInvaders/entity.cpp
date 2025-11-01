@@ -54,8 +54,31 @@ EntityBase LinkedEntity(Entity* entity)
 	return entity->eBase;
 }
 
+//read only
+Entity zeroEntity = { 0 };
+
 //to do.....
 Entity* LinkedBaseEntity(EntityBase eBase)
 {
-	if (eBase == EntityBase{})
+	if (eBase.id == -1 && eBase.index == -1)
+	{
+		return &zeroEntity;
+	}
+
+	Entity* entity = &gameState->allEntities[eBase.index];
+	if (entity->eBase.id == eBase.id)
+	{
+		return entity;
+	}
+	else
+	{
+		return &zeroEntity;
+	}
+}
+
+void Setup()
+{
+	gameState->initialized = true;
+
+	//Entity player = CreateEntity(player);
 }
