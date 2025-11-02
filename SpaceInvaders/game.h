@@ -3,6 +3,7 @@
 #define GAME_H
 
 #include "window.h"
+#include "entity.h"
 
 static Window* window;
 

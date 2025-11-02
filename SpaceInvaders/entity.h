@@ -6,38 +6,42 @@
 #include <stdint.h>
 #include <string>
 
-const int MAX_ENTITIES = 50;
+const int MAX_ENTITIES = 3;
 
 typedef struct EntityBase
 {
-	int index = -1;
-	int id = -1;
+	int index;
+	int id;
 } EntityBase;
 
 typedef enum EntityType
 {
-	undefined,
-	player,
+	UNDEFINED,
+	PLAYER,
 } EntityType;
 
 typedef struct Entity
 {
-	bool allocated = false;
+	bool allocated;
 	EntityBase eBase;
 	EntityType eType;
+	
 } Entity;
 
 typedef struct GameState
 {
-	bool initialized = false;
+	bool initialized;
 	Entity allEntities[MAX_ENTITIES];
-	uint64_t generatedEntityID = 0;
-	uint64_t entityTop = 0;
-	std::string worldName = "";
-	EntityBase playerHandle;
+	uint64_t generatedEntityID;
+	uint64_t entityTop;
+	//std::string worldName;
+	//EntityBase playerHandle;
 } GameState;
 
 static GameState* gameState;
+
+void InitZeroEntity();
+void InitGameState(Entity* defaultEntity);
 
 Entity* CreateEntity(EntityType type);
 void DestroyEntity(Entity* entity);
@@ -45,6 +49,9 @@ EntityBase LinkedEntity(Entity* entity);
 Entity* LinkedBaseEntity(EntityBase eBase);
 
 void Setup();
+void SetupPlayer(Entity* entity);
+
+void Update();
 //EntityBase* getEntityArray();
 
 #endif

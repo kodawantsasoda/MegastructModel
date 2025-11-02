@@ -1,13 +1,11 @@
 #include "entity.h"
 
-EntityBase* getEntityArray()
-{
-}
+static Entity* zeroEntity;
 
 Entity* CreateEntity(EntityType type) 
 {
 	int indexUpdate = -1;
-	Entity* entityUpdate;
+	Entity* entityUpdate = NULL;
 
 	for (int i = 0; i < MAX_ENTITIES; i++)
 	{
@@ -17,9 +15,11 @@ Entity* CreateEntity(EntityType type)
 			entityUpdate = &gameState->allEntities[i];
 			break;
 		}
+	}
 		if (indexUpdate == -1)
 		{
 			printf("ENTITIES ARE FULL! ADJUST SIZE!\n");
+			return NULL;
 		}
 
 		gameState->entityTop += 1;
@@ -35,12 +35,12 @@ Entity* CreateEntity(EntityType type)
 		//setup ents
 		switch (type)
 		{
-			case player: 
+			case PLAYER: 
+				SetupPlayer(entityUpdate);
 				break;
 		}
 
 		return entityUpdate;
-	}
 }
 
 //dereferencing magic
@@ -54,15 +54,12 @@ EntityBase LinkedEntity(Entity* entity)
 	return entity->eBase;
 }
 
-//read only
-Entity zeroEntity = { 0 };
-
 //to do.....
 Entity* LinkedBaseEntity(EntityBase eBase)
 {
 	if (eBase.id == -1 && eBase.index == -1)
 	{
-		return &zeroEntity;
+		return zeroEntity;
 	}
 
 	Entity* entity = &gameState->allEntities[eBase.index];
@@ -72,13 +69,53 @@ Entity* LinkedBaseEntity(EntityBase eBase)
 	}
 	else
 	{
-		return &zeroEntity;
+		return zeroEntity;
+	}
+}
+
+void InitZeroEntity()
+{
+	zeroEntity = (Entity*)malloc(sizeof(Entity));
+	zeroEntity->allocated = false;
+	zeroEntity->eBase.id = -1;
+	zeroEntity->eBase.index = -1;
+	zeroEntity->eType = UNDEFINED;
+}
+
+void InitGameState(Entity* defaultEntity)
+{
+	gameState = (GameState*)malloc(sizeof(GameState));
+	for (int i = 0; i < MAX_ENTITIES; i++)
+	{
+		gameState->allEntities[i] = *defaultEntity;
 	}
 }
 
 void Setup()
 {
-	gameState->initialized = true;
+	InitZeroEntity();
+	InitGameState(zeroEntity);
+	//gameState->worldName = "Main";
+	//gameState->initialized = true;
+
+	Entity* player;
+	player = CreateEntity(PLAYER);
+
+
+	//Entity mainPlayer = *CreateEntity(player);
 
 	//Entity player = CreateEntity(player);
+}
+
+void SetupPlayer(Entity* entity)
+{
+	entity->eType = PLAYER;
+}
+
+void Update()
+{
+	for (int i = 0; i < MAX_ENTITIES; i++)
+	{
+
+	}
 }
