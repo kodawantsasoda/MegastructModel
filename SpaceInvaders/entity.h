@@ -38,8 +38,6 @@ typedef struct GameState
 	//EntityBase playerHandle;
 } GameState;
 
-static GameState* gameState;
-
 void InitZeroEntity();
 void InitGameState(Entity* defaultEntity);
 

@@ -1,5 +1,6 @@
 #include "entity.h"
 
+static GameState* gameState;
 static Entity* zeroEntity;
 
 Entity* CreateEntity(EntityType type) 
