@@ -1,1 +1,2 @@
-Implementing a megastruct model in C. Lots of reference to Randy's system written in Odin.
+# Mega-Struct Model in C++ and Raylib
+Implementing a Mega-Struct model in C++ (C-style). The idea is getting rid of abstraction and overcomplication by providing one huge Entity Struct for all entities (hence, Mega-Struct), and using flags to turn stuff on as need be. The result should be faster iteration times. People a lot smarter than I am like Ryan Fluerry and ryanprime go into detail of how little memory waste is actually happening, or at least how trivial it is considering how fast computers are. Huge references to randyprime's Entity system written in Odin.
