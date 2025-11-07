@@ -17,34 +17,34 @@ Entity* CreateEntity(EntityType type)
 			break;
 		}
 	}
-		if (indexUpdate == -1)
-		{
-			printf("ENTITIES ARE FULL! ADJUST SIZE!\n");
-			return NULL;
-		}
+	if (indexUpdate == -1)
+	{
+		printf("ENTITIES ARE FULL! ADJUST SIZE!\n");
+		return NULL;
+	}
 
-		gameState->entityTop += 1;
+	gameState->entityTop += 1;
 
-		entityUpdate->allocated = true;
+	entityUpdate->allocated = true;
 
-		gameState->generatedEntityID += 1;
-		entityUpdate->eBase.id = gameState->generatedEntityID;
-		entityUpdate->eBase.index = indexUpdate;
+	gameState->generatedEntityID += 1;
+	entityUpdate->eBase.id = gameState->generatedEntityID;
+	entityUpdate->eBase.index = indexUpdate;
 
-		//add defaults for drawing
+	//add defaults for drawing
 
-		//setup ents
-		switch (type)
-		{
-			case PLAYER: 
-				SetupPlayer(entityUpdate);
-				break;
-		}
+	//setup ents
+	switch (type)
+	{
+		case PLAYER: 
+			SetupPlayer(entityUpdate);
+			break;
+	}
 
-		return entityUpdate;
+	return entityUpdate;
 }
 
-//dereferencing magic
+//dereferencing magic.. still gotta implement a freelist or something
 void DestroyEntity(Entity* entity)
 {
 	*entity = Entity{};
@@ -77,18 +77,32 @@ Entity* LinkedBaseEntity(EntityBase eBase)
 void InitZeroEntity()
 {
 	zeroEntity = (Entity*)malloc(sizeof(Entity));
-	zeroEntity->allocated = false;
-	zeroEntity->eBase.id = -1;
-	zeroEntity->eBase.index = -1;
-	zeroEntity->eType = UNDEFINED;
+	if (!zeroEntity)
+	{
+		printf("ERROR MALLOC ON ZERO ENTITY");
+	}
+	else
+	{
+		zeroEntity->allocated = false;
+		zeroEntity->eBase.id = -1;
+		zeroEntity->eBase.index = -1;
+		zeroEntity->eType = UNDEFINED;
+	}
 }
 
 void InitGameState(Entity* defaultEntity)
 {
 	gameState = (GameState*)malloc(sizeof(GameState));
-	for (int i = 0; i < MAX_ENTITIES; i++)
+	if (!gameState)
 	{
-		gameState->allEntities[i] = *defaultEntity;
+		printf("ERROR MALLOC ON GAME STATE STRUCT");
+	}
+	else
+	{
+		for (int i = 0; i < MAX_ENTITIES; i++)
+		{
+			gameState->allEntities[i] = *defaultEntity;
+		}
 	}
 }
 
@@ -101,6 +115,15 @@ void Setup()
 
 	Entity* player;
 	player = CreateEntity(PLAYER);
+
+	Entity* player2;
+	player2 = CreateEntity(PLAYER);
+
+	Entity* player3;
+	player3 = CreateEntity(PLAYER);
+
+	Entity* player4;
+	player4 = CreateEntity(PLAYER);
 
 
 	//Entity mainPlayer = *CreateEntity(player);
