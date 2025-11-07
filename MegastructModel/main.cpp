@@ -2,6 +2,6 @@
 
 int main()
 {
-	Setup();
+	//Setup();
 	Run();
 }

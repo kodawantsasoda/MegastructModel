@@ -1,4 +1,5 @@
 #include "entity.h"
+#include "raylib.h"
 
 static GameState* gameState;
 static Entity* zeroEntity;
@@ -79,7 +80,7 @@ void InitZeroEntity()
 	zeroEntity = (Entity*)malloc(sizeof(Entity));
 	if (!zeroEntity)
 	{
-		printf("ERROR MALLOC ON ZERO ENTITY");
+		printf("ERROR MALLOC ON ZERO ENTITY\n");
 	}
 	else
 	{
@@ -90,40 +91,46 @@ void InitZeroEntity()
 	}
 }
 
-void InitGameState(Entity* defaultEntity)
+void InitGameState(Entity& defaultEntity)
 {
 	gameState = (GameState*)malloc(sizeof(GameState));
 	if (!gameState)
 	{
-		printf("ERROR MALLOC ON GAME STATE STRUCT");
+		printf("ERROR MALLOC ON GAME STATE STRUCT\n");
 	}
 	else
 	{
 		for (int i = 0; i < MAX_ENTITIES; i++)
 		{
-			gameState->allEntities[i] = *defaultEntity;
+			gameState->allEntities[i] = defaultEntity;
 		}
 	}
+}
+
+void InitSprites()
+{
+	//later we can say stuff like if gameWorld = playscreen then load these, if title load these, unload these etc...
+	gameState->allSprites[PLAYER_SPRITE] = LoadTexture("Assets/player.png");
+	gameState->allSprites[ENEMY_SPRITE] = LoadTexture("Assets/alien1A.png");
+	gameState->allSprites[ENEMY_SPRITE2] = LoadTexture("Assets/alien2A.png");
 }
 
 void Setup()
 {
 	InitZeroEntity();
-	InitGameState(zeroEntity);
+	InitGameState(*zeroEntity);
 	//gameState->worldName = "Main";
 	//gameState->initialized = true;
 
 	Entity* player;
 	player = CreateEntity(PLAYER);
 
-	Entity* player2;
-	player2 = CreateEntity(PLAYER);
+	Entity* enemy;
+	enemy = CreateEntity(ENEMY);
 
-	Entity* player3;
-	player3 = CreateEntity(PLAYER);
-
-	Entity* player4;
-	player4 = CreateEntity(PLAYER);
+	Entity* enemy2;
+	enemy2 = CreateEntity(ENEMY);
+	enemy2->pos = { 20, 20 };
 
 
 	//Entity mainPlayer = *CreateEntity(player);
@@ -134,12 +141,21 @@ void Setup()
 void SetupPlayer(Entity* entity)
 {
 	entity->eType = PLAYER;
+	entity->pos = { 0, 0 };
+	entity->spriteIndex = PLAYER_SPRITE;
 }
 
+void SetupEnemy(Entity* entity)
+{
+	entity->eType = ENEMY;
+	entity->pos = { 10, 10 };
+	entity->spriteIndex = ENEMY_SPRITE;
+}
 void Update()
 {
 	for (int i = 0; i < MAX_ENTITIES; i++)
 	{
-
+		DrawTextureEx(gameState->allSprites[gameState->allEntities[i].spriteIndex], gameState->allEntities->pos, 0.0f, 1.0f, WHITE);
+		//gameState->allEntities[i]
 	}
 }

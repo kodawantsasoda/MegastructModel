@@ -5,9 +5,14 @@ void Run()
 	window = WindowInit();
 	WindowOpen(window);
 
+	Setup();
+
+
 	while (!WindowShouldClose())
 	{
 		DrawCanvas(window);
+		Update();
+		EndTextureMode();
 		/*****************************************************
 		DRAWING VIRTUAL CANVAS ONTO CURRENT SCREEN RESOLUTION*/
 		BeginDrawing();

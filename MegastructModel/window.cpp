@@ -75,7 +75,7 @@ void DrawCanvas(Window* win)
 
 	//ADD STUFF TO DRAW HERE!
 	//DrawTextureEx(window.playerDemo, ZERO_POS, 0, 1.0f, WHITE);
-	EndTextureMode();
+	//EndTextureMode();
 	/*END VIRTUAL RESOLUTION DRAWING
 	*****************************************************/
 }
