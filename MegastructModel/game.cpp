@@ -10,16 +10,22 @@ void Run()
 
 	while (!WindowShouldClose())
 	{
-		DrawCanvas(window);
 		Update();
+		/*****************************************************
+		VIRTUAL SCREEN DRAWING*/
+		BeginTextureMode(window->virtualCanvas);
+		ClearBackground(BLACK);
+		DrawCanvas(window);
+
+		//Draw stuff
+		Draw();
+
 		EndTextureMode();
 		/*****************************************************
 		DRAWING VIRTUAL CANVAS ONTO CURRENT SCREEN RESOLUTION*/
 		BeginDrawing();
 		ClearBackground(WHITE);
-
 		DrawVirtualResolution(window);
-
 		EndDrawing();
 		/*END DRAWING
 		*****************************************************/

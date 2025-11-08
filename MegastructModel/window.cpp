@@ -68,14 +68,4 @@ void DrawCanvas(Window* win)
 {
 	DetermineScale(win);
 	DetermineVirtualMouse(win);
-	/*****************************************************
-	VIRTUAL SCREEN DRAWING*/
-	BeginTextureMode(win->virtualCanvas);
-	ClearBackground(BLACK);
-
-	//ADD STUFF TO DRAW HERE!
-	//DrawTextureEx(window.playerDemo, ZERO_POS, 0, 1.0f, WHITE);
-	//EndTextureMode();
-	/*END VIRTUAL RESOLUTION DRAWING
-	*****************************************************/
 }

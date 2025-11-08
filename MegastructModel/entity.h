@@ -71,6 +71,7 @@ void SetupPlayer(Entity* entity);
 void SetupEnemy(Entity* entity);
 
 void Update();
+void Draw();
 //EntityBase* getEntityArray();
 
 #endif

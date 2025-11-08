@@ -40,6 +40,9 @@ Entity* CreateEntity(EntityType type)
 		case PLAYER: 
 			SetupPlayer(entityUpdate);
 			break;
+		case ENEMY:
+			SetupEnemy(entityUpdate);
+			break;
 	}
 
 	return entityUpdate;
@@ -119,6 +122,7 @@ void Setup()
 {
 	InitZeroEntity();
 	InitGameState(*zeroEntity);
+	InitSprites();
 	//gameState->worldName = "Main";
 	//gameState->initialized = true;
 
@@ -130,7 +134,7 @@ void Setup()
 
 	Entity* enemy2;
 	enemy2 = CreateEntity(ENEMY);
-	enemy2->pos = { 20, 20 };
+	enemy2->pos = { 50, 50 };
 
 
 	//Entity mainPlayer = *CreateEntity(player);
@@ -148,14 +152,22 @@ void SetupPlayer(Entity* entity)
 void SetupEnemy(Entity* entity)
 {
 	entity->eType = ENEMY;
-	entity->pos = { 10, 10 };
+	entity->pos = { 30, 30 };
 	entity->spriteIndex = ENEMY_SPRITE;
 }
+
 void Update()
+{
+ 	if (IsKeyDown(KEY_SPACE))
+	{
+		gameState->allEntities[0].pos.x += 2;
+	}
+}
+
+void Draw()
 {
 	for (int i = 0; i < MAX_ENTITIES; i++)
 	{
-		DrawTextureEx(gameState->allSprites[gameState->allEntities[i].spriteIndex], gameState->allEntities->pos, 0.0f, 1.0f, WHITE);
-		//gameState->allEntities[i]
+		DrawTextureEx(gameState->allSprites[gameState->allEntities[i].spriteIndex], gameState->allEntities[i].pos, 0.0f, 1.0f, WHITE);
 	}
 }
