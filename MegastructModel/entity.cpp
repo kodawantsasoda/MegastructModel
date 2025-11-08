@@ -147,6 +147,7 @@ void SetupPlayer(Entity* entity)
 	entity->eType = PLAYER;
 	entity->pos = { 0, 0 };
 	entity->spriteIndex = PLAYER_SPRITE;
+	entity->velocity = { 0.05f,  0};
 }
 
 void SetupEnemy(Entity* entity)
@@ -158,9 +159,11 @@ void SetupEnemy(Entity* entity)
 
 void Update()
 {
+	Vector2 add = Vector2Add(gameState->allEntities[0].pos, gameState->allEntities[0].velocity);
+	gameState->allEntities[0].pos = add;
  	if (IsKeyDown(KEY_SPACE))
 	{
-		gameState->allEntities[0].pos.x += 2;
+		//gameState->allEntities[0].pos += Vector2Add(gameState->allEntities[0].pos, gameState->allEntities[0].velocity) * GetFrameTime();
 	}
 }
 
@@ -170,4 +173,5 @@ void Draw()
 	{
 		DrawTextureEx(gameState->allSprites[gameState->allEntities[i].spriteIndex], gameState->allEntities[i].pos, 0.0f, 1.0f, WHITE);
 	}
+	DrawFPS(100 + 16, 100);
 }

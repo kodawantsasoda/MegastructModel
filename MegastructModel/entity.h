@@ -6,6 +6,7 @@
 #include <stdint.h>
 #include <string>
 #include <raylib.h>
+#include <raymath.h>
 
 const int MAX_ENTITIES = 3;
 const int MAX_SPRITES = 3;
@@ -39,7 +40,7 @@ typedef struct Entity
 	SpriteIndex spriteIndex;
 
 	Vector2 pos;
-	//Texture2D* texture;
+	Vector2 velocity;
 	
 } Entity;
 

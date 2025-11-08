@@ -7,7 +7,8 @@ void Run()
 
 	Setup();
 
-
+//	SetTargetFPS(60);
+	
 	while (!WindowShouldClose())
 	{
 		Update();
