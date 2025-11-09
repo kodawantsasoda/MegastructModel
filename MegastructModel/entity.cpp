@@ -113,9 +113,17 @@ void InitGameState(Entity& defaultEntity)
 void InitSprites()
 {
 	//later we can say stuff like if gameWorld = playscreen then load these, if title load these, unload these etc...
-	gameState->allSprites[PLAYER_SPRITE] = LoadTexture("Assets/player.png");
-	gameState->allSprites[ENEMY_SPRITE] = LoadTexture("Assets/alien1A.png");
-	gameState->allSprites[ENEMY_SPRITE2] = LoadTexture("Assets/alien2A.png");
+	Image img = LoadImage("Assets/player.png");
+	gameState->allSprites[PLAYER_SPRITE] = LoadTextureFromImage(img);
+	UnloadImage(img);
+
+	img = LoadImage("Assets/alien1A.png");
+	gameState->allSprites[ENEMY_SPRITE] = LoadTextureFromImage(img);
+	UnloadImage(img);
+
+	img = LoadImage("Assets/alien2A.png");
+	gameState->allSprites[ENEMY_SPRITE2] = LoadTextureFromImage(img);
+	UnloadImage(img);
 }
 
 void Setup()
