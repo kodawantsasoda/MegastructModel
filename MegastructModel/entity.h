@@ -24,6 +24,15 @@ typedef enum EntityType
 	ENEMY,
 } EntityType;
 
+typedef enum EntityState
+{
+	IDLE,
+	MOVING, 
+	HIT,
+	DYING,
+	DEAD,
+};
+
 typedef enum SpriteIndex
 {
 	PLAYER_SPRITE,
@@ -31,6 +40,7 @@ typedef enum SpriteIndex
 	ENEMY_SPRITE2,
 } SpriteIndex;
 
+//NEEDS: RECTANGLEWS FOR SCALING UP/DOWN DRAWING, COLLIDER RECTANGLES, ANIMATION SETTINGS, 
 typedef struct Entity
 {
 	bool allocated;
@@ -41,6 +51,9 @@ typedef struct Entity
 
 	Vector2 pos;
 	float moveSpeed;
+	EntityState state;
+	Rectangle collider;
+	Rectangle scaleSprite;
 	
 } Entity;
 
@@ -71,6 +84,7 @@ void Setup();
 void SetupPlayer(Entity* entity);
 void SetupEnemy(Entity* entity);
 
+void UpdatePlayer(Entity* player);
 void Update();
 void Draw();
 //EntityBase* getEntityArray();

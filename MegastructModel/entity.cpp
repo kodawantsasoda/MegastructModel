@@ -145,9 +145,11 @@ void Setup()
 void SetupPlayer(Entity* entity)
 {
 	entity->eType = PLAYER;
-	entity->pos = { 0, 0 };
+	entity->pos = { 200, 150 };
 	entity->spriteIndex = PLAYER_SPRITE;
 	entity->moveSpeed = 100.0f;
+	entity->state = IDLE;	
+	entity->collider = { entity->pos.x, entity->pos.y, 26, 16 };
 }
 
 void SetupEnemy(Entity* entity)
@@ -157,19 +159,57 @@ void SetupEnemy(Entity* entity)
 	entity->spriteIndex = ENEMY_SPRITE;
 }
 
-void Update()
+void UpdatePlayer(Entity* player)
 {
-	//Vector2 add = Vector2Add(gameState->allEntities[0].pos, gameState->allEntities[0].velocity);
- 	if (IsKeyDown(KEY_RIGHT))
+	Vector2 newPos = { 0,0 };
+
+	if (IsKeyDown(KEY_RIGHT))
 	{
-		Vector2 newPos = { gameState->allEntities[0].pos.x + 1, gameState->allEntities[0].pos.y};
-		gameState->allEntities[0].pos = Vector2Lerp(gameState->allEntities[0].pos, newPos, 2.0f);
-		//gameState->allEntities[0].pos.x += gameState->allEntities[0].moveSpeed * GetFrameTime();
+		newPos = { player->pos.x + 1, player->pos.y };
+		player->state = MOVING;
+		player->pos = Vector2Lerp(player->pos, newPos, 2.0f);
 	}
 	if (IsKeyDown(KEY_LEFT))
 	{
-		Vector2 newPos = { gameState->allEntities[0].pos.x - 1, gameState->allEntities[0].pos.y };
-		gameState->allEntities[0].pos.x -= gameState->allEntities[0].moveSpeed * GetFrameTime();
+		newPos = { player->pos.x - 1, player->pos.y };
+		player->state = MOVING;
+		player->pos = Vector2Lerp(player->pos, newPos, 2.0f);
+	}
+	if (IsKeyDown(KEY_UP))
+	{
+		newPos = { player->pos.x, player->pos.y - 1 };
+		player->state = MOVING;
+		player->pos = Vector2Lerp(player->pos, newPos, 2.0f);
+	}
+	if (IsKeyDown(KEY_DOWN))
+	{
+		newPos = { player->pos.x, player->pos.y + 1 };
+		player->state = MOVING;
+		player->pos = Vector2Lerp(player->pos, newPos, 2.0f);
+	}
+
+	if (player->state == MOVING)
+	{
+		player->collider.x = player->pos.x;
+		player->collider.y = player->pos.y;
+	}
+
+	player->state = IDLE;
+}
+
+void Update()
+{
+	for (int i = 0; i < MAX_ENTITIES; i++)
+	{
+		switch (gameState->allEntities[i].eType)
+		{
+		case PLAYER:
+			UpdatePlayer(&gameState->allEntities[i]);
+			break;
+		case ENEMY:
+			//UpdateEnemy(&gameState->allEntities[i]);
+			break;
+		}
 	}
 }
 
@@ -179,5 +219,13 @@ void Draw()
 	{
 		DrawTextureEx(gameState->allSprites[gameState->allEntities[i].spriteIndex], gameState->allEntities[i].pos, 0.0f, 1.0f, WHITE);
 	}
-	DrawFPS(100 + 16, 100);
+	Color colliderColor = { 206, 28, 68, 50 };
+	DrawRectangleRec(gameState->allEntities->collider, colliderColor);
+	//DrawFPS(100 + 16, 100);
+	DrawText("SCORE - 1", 0, 0, 10, RED);
+	DrawText("00000", 12, 12, 10, RED);
+	DrawText("MIDWAY", 120, 0, 10, RED);
+	DrawText("SCORE - 2", 250, 0, 10, RED);
+	DrawText("00000", 260, 12, 10, RED);
+
 }
