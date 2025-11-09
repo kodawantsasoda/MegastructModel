@@ -7,7 +7,8 @@ void Run()
 
 	Setup();
 
-//	SetTargetFPS(60);
+	SetTargetFPS(60);
+	SetConfigFlags(FLAG_VSYNC_HINT);
 	
 	while (!WindowShouldClose())
 	{

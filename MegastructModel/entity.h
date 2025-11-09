@@ -40,7 +40,7 @@ typedef struct Entity
 	SpriteIndex spriteIndex;
 
 	Vector2 pos;
-	Vector2 velocity;
+	float moveSpeed;
 	
 } Entity;
 

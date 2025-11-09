@@ -147,7 +147,7 @@ void SetupPlayer(Entity* entity)
 	entity->eType = PLAYER;
 	entity->pos = { 0, 0 };
 	entity->spriteIndex = PLAYER_SPRITE;
-	entity->velocity = { 0.05f,  0};
+	entity->moveSpeed = 100.0f;
 }
 
 void SetupEnemy(Entity* entity)
@@ -159,11 +159,17 @@ void SetupEnemy(Entity* entity)
 
 void Update()
 {
-	Vector2 add = Vector2Add(gameState->allEntities[0].pos, gameState->allEntities[0].velocity);
-	gameState->allEntities[0].pos = add;
- 	if (IsKeyDown(KEY_SPACE))
+	//Vector2 add = Vector2Add(gameState->allEntities[0].pos, gameState->allEntities[0].velocity);
+ 	if (IsKeyDown(KEY_RIGHT))
 	{
-		//gameState->allEntities[0].pos += Vector2Add(gameState->allEntities[0].pos, gameState->allEntities[0].velocity) * GetFrameTime();
+		Vector2 newPos = { gameState->allEntities[0].pos.x + 1, gameState->allEntities[0].pos.y};
+		gameState->allEntities[0].pos = Vector2Lerp(gameState->allEntities[0].pos, newPos, 2.0f);
+		//gameState->allEntities[0].pos.x += gameState->allEntities[0].moveSpeed * GetFrameTime();
+	}
+	if (IsKeyDown(KEY_LEFT))
+	{
+		Vector2 newPos = { gameState->allEntities[0].pos.x - 1, gameState->allEntities[0].pos.y };
+		gameState->allEntities[0].pos.x -= gameState->allEntities[0].moveSpeed * GetFrameTime();
 	}
 }
 
