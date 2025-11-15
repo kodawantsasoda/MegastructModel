@@ -1,8 +1,8 @@
 #include "entity.h"
 #include "raylib.h"
 
-static GameState* gameState;
-static Entity* zeroEntity;
+static GameState gameState;
+static Entity zeroEntity;
 
 Entity* CreateEntity(EntityType type) 
 {
@@ -11,10 +11,10 @@ Entity* CreateEntity(EntityType type)
 
 	for (int i = 0; i < MAX_ENTITIES; i++)
 	{
-		if (!gameState->allEntities[i].allocated)
+		if (!gameState.allEntities[i].allocated)
 		{
 			indexUpdate = i;
-			entityUpdate = &gameState->allEntities[i];
+			entityUpdate = &gameState.allEntities[i];
 			break;
 		}
 	}
@@ -24,12 +24,12 @@ Entity* CreateEntity(EntityType type)
 		return NULL;
 	}
 
-	gameState->entityTop += 1;
+	gameState.entityTop += 1;
 
 	entityUpdate->allocated = true;
 
-	gameState->generatedEntityID += 1;
-	entityUpdate->eBase.id = gameState->generatedEntityID;
+	gameState.generatedEntityID += 1;
+	entityUpdate->eBase.id = gameState.generatedEntityID;
 	entityUpdate->eBase.index = indexUpdate;
 
 	//add defaults for drawing
@@ -64,40 +64,38 @@ Entity* LinkedBaseEntity(EntityBase eBase)
 {
 	if (eBase.id == -1 && eBase.index == -1)
 	{
-		return zeroEntity;
+		return &zeroEntity;
 	}
 
-	Entity* entity = &gameState->allEntities[eBase.index];
+	Entity* entity = &gameState.allEntities[eBase.index];
 	if (entity->eBase.id == eBase.id)
 	{
 		return entity;
 	}
 	else
 	{
-		return zeroEntity;
+		return &zeroEntity;
 	}
 }
 
 void InitZeroEntity()
 {
-	zeroEntity = (Entity*)malloc(sizeof(Entity));
-	if (!zeroEntity)
+	if (&zeroEntity)
 	{
 		printf("ERROR MALLOC ON ZERO ENTITY\n");
 	}
 	else
 	{
-		zeroEntity->allocated = false;
-		zeroEntity->eBase.id = -1;
-		zeroEntity->eBase.index = -1;
-		zeroEntity->eType = UNDEFINED;
+		zeroEntity.allocated = false;
+		zeroEntity.eBase.id = -1;
+		zeroEntity.eBase.index = -1;
+		zeroEntity.eType = UNDEFINED;
 	}
 }
 
 void InitGameState(Entity& defaultEntity)
 {
-	gameState = (GameState*)malloc(sizeof(GameState));
-	if (!gameState)
+	if (&gameState)
 	{
 		printf("ERROR MALLOC ON GAME STATE STRUCT\n");
 	}
@@ -105,7 +103,7 @@ void InitGameState(Entity& defaultEntity)
 	{
 		for (int i = 0; i < MAX_ENTITIES; i++)
 		{
-			gameState->allEntities[i] = defaultEntity;
+			gameState.allEntities[i] = defaultEntity;
 		}
 	}
 }
@@ -114,25 +112,25 @@ void InitSprites()
 {
 	//later we can say stuff like if gameWorld = playscreen then load these, if title load these, unload these etc...
 	Image img = LoadImage("Assets/player.png");
-	gameState->allSprites[PLAYER_SPRITE] = LoadTextureFromImage(img);
+	gameState.allSprites[PLAYER_SPRITE] = LoadTextureFromImage(img);
 	UnloadImage(img);
 
 	img = LoadImage("Assets/alien1A.png");
-	gameState->allSprites[ENEMY_SPRITE] = LoadTextureFromImage(img);
+	gameState.allSprites[ENEMY_SPRITE] = LoadTextureFromImage(img);
 	UnloadImage(img);
 
 	img = LoadImage("Assets/alien2A.png");
-	gameState->allSprites[ENEMY_SPRITE2] = LoadTextureFromImage(img);
+	gameState.allSprites[ENEMY_SPRITE2] = LoadTextureFromImage(img);
 	UnloadImage(img);
 }
 
 void Setup()
 {
 	InitZeroEntity();
-	InitGameState(*zeroEntity);
+	InitGameState(zeroEntity);
 	InitSprites();
-	//gameState->worldName = "Main";
-	//gameState->initialized = true;
+	//gameState.worldName = "Main";
+	//gameState.initialized = true;
 
 	Entity* player;
 	player = CreateEntity(PLAYER);
@@ -143,21 +141,17 @@ void Setup()
 	Entity* enemy2;
 	enemy2 = CreateEntity(ENEMY);
 	enemy2->pos = { 50, 50 };
-
-
-	//Entity mainPlayer = *CreateEntity(player);
-
-	//Entity player = CreateEntity(player);
 }
 
 void SetupPlayer(Entity* entity)
 {
 	entity->eType = PLAYER;
-	entity->pos = { 200, 150 };
+	entity->pos = { (float)GetScreenWidth() / 2, (float)GetScreenHeight() / 2 };
 	entity->spriteIndex = PLAYER_SPRITE;
 	entity->moveSpeed = 100.0f;
 	entity->state = IDLE;	
 	entity->collider = { entity->pos.x, entity->pos.y, 26, 16 };
+	entity->colliderColor = { 206, 28, 68, 50 };
 }
 
 void SetupEnemy(Entity* entity)
@@ -165,6 +159,14 @@ void SetupEnemy(Entity* entity)
 	entity->eType = ENEMY;
 	entity->pos = { 30, 30 };
 	entity->spriteIndex = ENEMY_SPRITE;
+	entity->collider = { entity->pos.x, entity->pos.y, 26, 16 };
+	entity->colliderColor = { 206, 28, 68, 50 };
+}
+
+void MoveCollider(Entity* entity)
+{
+	entity->collider.x = entity->pos.x;
+	entity->collider.y = entity->pos.y;
 }
 
 void UpdatePlayer(Entity* player)
@@ -198,24 +200,28 @@ void UpdatePlayer(Entity* player)
 
 	if (player->state == MOVING)
 	{
-		player->collider.x = player->pos.x;
-		player->collider.y = player->pos.y;
+		MoveCollider(player);
 	}
 
 	player->state = IDLE;
+}
+
+void UpdateEnemy(Entity* entity)
+{
+	MoveCollider(entity);
 }
 
 void Update()
 {
 	for (int i = 0; i < MAX_ENTITIES; i++)
 	{
-		switch (gameState->allEntities[i].eType)
+		switch (gameState.allEntities[i].eType)
 		{
 		case PLAYER:
-			UpdatePlayer(&gameState->allEntities[i]);
+			UpdatePlayer(&gameState.allEntities[i]);
 			break;
 		case ENEMY:
-			//UpdateEnemy(&gameState->allEntities[i]);
+			UpdateEnemy(&gameState.allEntities[i]);
 			break;
 		}
 	}
@@ -225,15 +231,13 @@ void Draw()
 {
 	for (int i = 0; i < MAX_ENTITIES; i++)
 	{
-		DrawTextureEx(gameState->allSprites[gameState->allEntities[i].spriteIndex], gameState->allEntities[i].pos, 0.0f, 1.0f, WHITE);
+		DrawTextureEx(gameState.allSprites[gameState.allEntities[i].spriteIndex], gameState.allEntities[i].pos, 0.0f, 1.0f, WHITE);
+		DrawRectangleRec(gameState.allEntities[i].collider, gameState.allEntities[i].colliderColor);
 	}
-	Color colliderColor = { 206, 28, 68, 50 };
-	DrawRectangleRec(gameState->allEntities->collider, colliderColor);
 	//DrawFPS(100 + 16, 100);
 	DrawText("SCORE - 1", 0, 0, 10, RED);
 	DrawText("00000", 12, 12, 10, RED);
 	DrawText("MIDWAY", 120, 0, 10, RED);
 	DrawText("SCORE - 2", 250, 0, 10, RED);
 	DrawText("00000", 260, 12, 10, RED);
-
 }

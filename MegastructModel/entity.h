@@ -4,9 +4,10 @@
 
 #include <stdio.h>
 #include <stdint.h>
-#include <string>
+#include <stdlib.h>
 #include <raylib.h>
 #include <raymath.h>
+
 
 const int MAX_ENTITIES = 3;
 const int MAX_SPRITES = 3;
@@ -54,7 +55,7 @@ typedef struct Entity
 	EntityState state;
 	Rectangle collider;
 	Rectangle scaleSprite;
-	
+	Color colliderColor;
 } Entity;
 
 typedef struct GameState
@@ -84,7 +85,11 @@ void Setup();
 void SetupPlayer(Entity* entity);
 void SetupEnemy(Entity* entity);
 
+void MoveCollider(Entity* entity);
+void DetectCollision(Entity* entity);
+
 void UpdatePlayer(Entity* player);
+void UpdateEnemy(Entity* enemy);
 void Update();
 void Draw();
 //EntityBase* getEntityArray();
