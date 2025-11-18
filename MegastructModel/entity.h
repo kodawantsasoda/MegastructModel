@@ -86,7 +86,7 @@ void SetupPlayer(Entity* entity);
 void SetupEnemy(Entity* entity);
 
 void MoveCollider(Entity* entity);
-void DetectCollision(Entity* entity);
+bool DetectCollision(Entity* entity);
 
 void UpdatePlayer(Entity* player);
 void UpdateEnemy(Entity* enemy);

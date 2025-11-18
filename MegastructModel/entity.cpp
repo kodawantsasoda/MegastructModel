@@ -169,6 +169,52 @@ void MoveCollider(Entity* entity)
 	entity->collider.y = entity->pos.y;
 }
 
+bool DetectCollision(Entity* entity)
+{
+	int upperBoundX = entity->collider.x + entity->collider.width;
+	int upperBoundY = entity->collider.y + entity->collider.height;
+
+	bool collided;
+
+	for (int i = 0; i < MAX_ENTITIES; i++)
+	{
+		//entity* in question is to the LEFT of the entity that it's being compared to
+		if (entity->collider.x - gameState.allEntities[i].collider.x < 0)
+		{
+			if (upperBoundX >= gameState.allEntities[i].collider.x)
+			{
+					return true;
+			}
+		}
+		//entity* in question is to the RIGHT of the entity that it's being compared to
+		else
+		{
+			if (entity->collider.x <= gameState.allEntities[i].collider.x + gameState.allEntities[i].collider.width)
+			{
+				return true;
+			}
+		}
+		//TODO: CHANGE TO Y!!!!!!
+		//entity* in question is to the LEFT of the entity that it's being compared to
+		if (entity->collider.x - gameState.allEntities[i].collider.x < 0)
+		{
+			if (upperBoundX >= gameState.allEntities[i].collider.x)
+			{
+				return true;
+			}
+		}
+		//entity* in question is to the RIGHT of the entity that it's being compared to
+		else
+		{
+			if (entity->collider.x <= gameState.allEntities[i].collider.x + gameState.allEntities[i].collider.width)
+			{
+				return true;
+			}
+		}
+	}
+}
+
+
 void UpdatePlayer(Entity* player)
 {
 	Vector2 newPos = { 0,0 };
@@ -233,7 +279,7 @@ void Draw()
 	{
 		DrawTextureEx(gameState.allSprites[gameState.allEntities[i].spriteIndex], gameState.allEntities[i].pos, 0.0f, 1.0f, WHITE);
 		DrawRectangleRec(gameState.allEntities[i].collider, gameState.allEntities[i].colliderColor);
-	}
+		DetectCollision(&gameState.allEntities[i]);
 	//DrawFPS(100 + 16, 100);
 	DrawText("SCORE - 1", 0, 0, 10, RED);
 	DrawText("00000", 12, 12, 10, RED);
