@@ -174,44 +174,52 @@ bool DetectCollision(Entity* entity)
 	int upperBoundX = entity->collider.x + entity->collider.width;
 	int upperBoundY = entity->collider.y + entity->collider.height;
 
-	bool collided;
+	bool collided = false;
 
 	for (int i = 0; i < MAX_ENTITIES; i++)
 	{
-		//entity* in question is to the LEFT of the entity that it's being compared to
-		if (entity->collider.x - gameState.allEntities[i].collider.x < 0)
+		if (entity->eBase.id != gameState.allEntities[i].eBase.id)
 		{
-			if (upperBoundX >= gameState.allEntities[i].collider.x)
+			//entity* in question is to the LEFT of the entity that it's being compared to
+			if (entity->collider.x - gameState.allEntities[i].collider.x < 0)
 			{
-					return true;
+				if (upperBoundX >= gameState.allEntities[i].collider.x)
+				{
+					collided = true;
+				}
 			}
-		}
-		//entity* in question is to the RIGHT of the entity that it's being compared to
-		else
-		{
-			if (entity->collider.x <= gameState.allEntities[i].collider.x + gameState.allEntities[i].collider.width)
+			//entity* in question is to the RIGHT of the entity that it's being compared to
+			else
 			{
-				return true;
+				if (entity->collider.x <= gameState.allEntities[i].collider.x + gameState.allEntities[i].collider.width)
+				{
+					collided = true;
+				}
 			}
-		}
-		//TODO: CHANGE TO Y!!!!!!
-		//entity* in question is to the LEFT of the entity that it's being compared to
-		if (entity->collider.x - gameState.allEntities[i].collider.x < 0)
-		{
-			if (upperBoundX >= gameState.allEntities[i].collider.x)
+			if (collided)
 			{
-				return true;
-			}
-		}
-		//entity* in question is to the RIGHT of the entity that it's being compared to
-		else
-		{
-			if (entity->collider.x <= gameState.allEntities[i].collider.x + gameState.allEntities[i].collider.width)
-			{
-				return true;
+				//entity* in question is to the ABOVE of the entity that it's being compared to
+				if (entity->collider.y - gameState.allEntities[i].collider.y < 0)
+				{
+					if (upperBoundY >= gameState.allEntities[i].collider.y)
+					{
+						//collided = true;
+						return true;
+					}
+				}
+				//entity* in question is to the BELOW of the entity that it's being compared to
+				else
+				{
+					if (entity->collider.y <= gameState.allEntities[i].collider.y + gameState.allEntities[i].collider.height)
+					{
+						//collided = true;
+						return true;
+					}
+				}
 			}
 		}
 	}
+	return false;
 }
 
 
@@ -279,7 +287,12 @@ void Draw()
 	{
 		DrawTextureEx(gameState.allSprites[gameState.allEntities[i].spriteIndex], gameState.allEntities[i].pos, 0.0f, 1.0f, WHITE);
 		DrawRectangleRec(gameState.allEntities[i].collider, gameState.allEntities[i].colliderColor);
-		DetectCollision(&gameState.allEntities[i]);
+		
+		if (DetectCollision(&gameState.allEntities[i]))
+		{
+			printf("collision detected");
+		}
+	}
 	//DrawFPS(100 + 16, 100);
 	DrawText("SCORE - 1", 0, 0, 10, RED);
 	DrawText("00000", 12, 12, 10, RED);
