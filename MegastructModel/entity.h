@@ -6,7 +6,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <raylib.h>
-#include <raymath.h>
+#include <math.h>
 
 
 const int MAX_ENTITIES = 3;
@@ -87,6 +87,7 @@ void SetupEnemy(Entity* entity);
 
 void MoveCollider(Entity* entity);
 bool DetectCollision(Entity* entity);
+bool OptimizedCollion(Entity* entity);
 
 void UpdatePlayer(Entity* player);
 void UpdateEnemy(Entity* enemy);
