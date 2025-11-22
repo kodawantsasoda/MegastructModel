@@ -4,6 +4,7 @@
 
 #include "window.h"
 #include "entity.h"
+#include "SpatialGrid.h"
 
 static Window* window;
 

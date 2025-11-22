@@ -5,6 +5,9 @@ void Run()
 	window = WindowInit();
 	WindowOpen(window);
 
+	Grid grid;
+	grid.spacing = 20;
+
 	Setup();
 
 	SetTargetFPS(60);
@@ -21,6 +24,7 @@ void Run()
 
 		//Draw stuff
 		Draw();
+		DrawGrid(&grid, GetScreenWidth(), GetScreenHeight());
 
 		EndTextureMode();
 		/*****************************************************
