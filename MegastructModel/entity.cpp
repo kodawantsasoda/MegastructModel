@@ -146,7 +146,7 @@ void Setup()
 void SetupPlayer(Entity* entity)
 {
 	entity->eType = PLAYER;
-	entity->pos = { (float)GetScreenWidth() / 2, (float)GetScreenHeight() / 2 };
+	entity->pos = { 0, 0 };
 	entity->spriteIndex = PLAYER_SPRITE;
 	entity->moveSpeed = 100.0f;
 	entity->state = IDLE;	

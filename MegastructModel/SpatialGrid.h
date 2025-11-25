@@ -8,8 +8,8 @@
 
 typedef struct Grid
 {
-	Vector2 gridPosStart;
-	Vector2 gridPosEnd;
+	Vector2 minBound;
+	Vector2 maxBound;
 	float dimension;
 } Grid;
 
@@ -19,7 +19,9 @@ typedef struct SquareQuery
 	float radius;
 } SquareQuery;
 
-Grid InitGrid(Vector2 startPos, Vector2 endPos, float dimension);
+void InitGrid(Grid* grid, Vector2 minBound, Vector2 maxBound, float dimension);
+int GetIndex(Grid* grid, Vector2 pos);
+float sat(float x);
 
 //Grid functionality
 int32_t index1d(Grid* grid, float ordinate);
@@ -31,6 +33,6 @@ Vector2 firstCell(SquareQuery* square, Grid* grid);
 Vector2 nextCell(SquareQuery* square, Vector2 cell, Grid* grid);
 bool inRange(SquareQuery* square, Vector2 pos);
 
-void DrawGrid(Grid* grid, int screenWidth, int screenHeight);
+void DrawGrid(Grid* grid);
 
 #endif

@@ -6,7 +6,7 @@ void Run()
 	WindowOpen(window);
 
 	Grid grid;
-	grid.spacing = 20;
+	InitGrid(&grid, { 0, 0 }, { 100, 100 }, 10.0f);
 
 	Setup();
 
@@ -16,6 +16,7 @@ void Run()
 	while (!WindowShouldClose())
 	{
 		Update();
+		int x = GetIndex(&grid, { 56,0 });
 		/*****************************************************
 		VIRTUAL SCREEN DRAWING*/
 		BeginTextureMode(window->virtualCanvas);
@@ -24,7 +25,7 @@ void Run()
 
 		//Draw stuff
 		Draw();
-		DrawGrid(&grid, GetScreenWidth(), GetScreenHeight());
+		DrawGrid(&grid);
 
 		EndTextureMode();
 		/*****************************************************

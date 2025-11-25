@@ -15,16 +15,34 @@ Vector2 index2d(Grid* grid, Vector2 pos)
 }
 
 
-Grid InitGrid(Vector2 startPos, Vector2 endPos, float spacing)
+void InitGrid(Grid* grid, Vector2 minBound, Vector2 maxBound, float dimension)
 {
-
+	grid->minBound = minBound;
+	grid->maxBound = maxBound;
+	grid->dimension = dimension;
 }
 
-void DrawGrid(Grid* grid, int screenWidth, int screenHeight)
+float sat(float x) {
+	if (x < 0.0f) return 0.0f;
+	if (x > 1.0f) return 1.0f;
+	return x;
+}
+
+int GetIndex(Grid* grid, Vector2 pos) 
 {
-	for (int i = grid->dimension; i < screenWidth; i += grid->dimension)
+	float x = (pos.x - grid->minBound.x) / (grid->maxBound.x - grid->minBound.x);
+	int y = (pos.y - grid->minBound.y) / (grid->maxBound.y - grid->minBound.y);
+	
+	x = floor(x * (grid->dimension - 1));
+	
+	return x;
+}
+
+void DrawGrid(Grid* grid)
+{
+	for (int i = grid->minBound.x; i < grid->maxBound.x; i += grid->dimension)
 	{
-		DrawLine(0, i, screenWidth, i, WHITE);
-		DrawLine(i, 0, i, screenHeight, WHITE);
+		DrawLine(0, i, grid->maxBound.x - grid->minBound.x, i, WHITE);
+		DrawLine(i, 0, i, grid->maxBound.y - grid->minBound.y, WHITE);
 	}
 }
