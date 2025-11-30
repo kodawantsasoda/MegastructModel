@@ -6,8 +6,7 @@ void Run()
 	WindowOpen(window);
 
 	Grid grid;
-	InitGrid(&grid, { 0, 0 }, { 100, 100 }, 10.0f);
-
+	InitGrid(&grid, { 0, 0 }, { (float)GetScreenWidth(), (float)GetScreenHeight() }, 10.0f);
 	Setup();
 
 	SetTargetFPS(60);
@@ -16,7 +15,10 @@ void Run()
 	while (!WindowShouldClose())
 	{
 		Update();
-		int x = GetIndex(&grid, { 56,0 });
+		int x = GetIndex(&grid, { 125, 95 });
+		//int y = GetIndexY(&grid, { 12, 30 });
+		Vector2 pos = { (float)(x * grid.spacing ), 0 };
+		Rectangle rec = { pos.x, pos.y, grid.spacing, grid.spacing };
 		/*****************************************************
 		VIRTUAL SCREEN DRAWING*/
 		BeginTextureMode(window->virtualCanvas);
@@ -26,6 +28,8 @@ void Run()
 		//Draw stuff
 		Draw();
 		DrawGrid(&grid);
+		//DrawRectangle(x * grid.spacing, 0, grid.spacing, grid.spacing, WHITE);
+		DrawRectanglePro(rec, {0,0}, 1.0f, RED);
 
 		EndTextureMode();
 		/*****************************************************
