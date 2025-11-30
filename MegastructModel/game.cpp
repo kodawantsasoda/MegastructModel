@@ -17,7 +17,7 @@ void Run()
 		Update();
 		int x = GetIndex(&grid, { 125, 95 });
 		//int y = GetIndexY(&grid, { 12, 30 });
-		Vector2 pos = { (float)(x * grid.spacing ), 0 };
+		Vector2 pos = { int(x / grid.dimension) * grid.spacing, int(x / grid.dimension) * grid.spacing};
 		Rectangle rec = { pos.x, pos.y, grid.spacing, grid.spacing };
 		/*****************************************************
 		VIRTUAL SCREEN DRAWING*/
