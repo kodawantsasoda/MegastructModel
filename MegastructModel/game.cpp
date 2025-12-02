@@ -15,9 +15,9 @@ void Run()
 	while (!WindowShouldClose())
 	{
 		Update();
-		int x = GetIndex(&grid, { 125, 95 });
+		int x = GetIndex(&grid, { 319, 189 });
 		//int y = GetIndexY(&grid, { 12, 30 });
-		Vector2 pos = { int(x / grid.dimension) * grid.spacing, int(x / grid.dimension) * grid.spacing};
+		Vector2 pos = { (x % (int)grid.dimension) * grid.spacing, int(x / grid.dimension) * grid.spacing};
 		Rectangle rec = { pos.x, pos.y, grid.spacing, grid.spacing };
 		/*****************************************************
 		VIRTUAL SCREEN DRAWING*/
