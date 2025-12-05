@@ -45,30 +45,19 @@ void Insert(Grid* grid, Entity* entity)
 	int dimension = (rowMax - rowMin + 1) * (colMax - colMin + 1);
 	Color yellow = { 255, 255, 0, 100 };
 
-	bool stuck = false;
-
 	int colTemp = colMin;
 	int rowTemp = rowMin;
 
 	for (int i = 0; i < dimension; i++)
 	{
-		stuck = true;
-		if (colTemp <= colMax)
-		{
-			DrawRectangle((colTemp * grid->spacing), rowTemp * grid->spacing, grid->spacing, grid->spacing, yellow);
-			colTemp++;
-		}
-		else
+		if (colTemp > colMax)
 		{
 			colTemp = colMin;
 			rowTemp++;
-			DrawRectangle((colTemp * grid->spacing), rowTemp * grid->spacing, grid->spacing, grid->spacing, yellow);
-			colTemp++;
 		}
+		DrawRectangle((colTemp * grid->spacing), rowTemp * grid->spacing, grid->spacing, grid->spacing, yellow);
+		colTemp++;
 	}
-	stuck = false;
-	if (stuck == false)
-		printf("NOT-STUCK");
 }
 
 //need to figure out how to draw this...
