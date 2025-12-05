@@ -2,9 +2,7 @@
 #ifndef SPATIALGRID_H
 #define SPATIALGRID_H
 
-#include <stdint.h>
-#include <raylib.h>
-#include <raymath.h>
+#include "entity.h"
 
 typedef struct Grid
 {
@@ -25,7 +23,8 @@ float sat(float x);
 
 void InitGrid(Grid* grid, Vector2 minBound, Vector2 maxBound, float dimension);
 int GetIndex(Grid* grid, Vector2 pos);
-int GetIndexY(Grid* grid, Vector2 pos);
+void NewClient(Entity* entity);
+void Insert(Grid* grid, Entity* entity);
 
 void DrawGrid(Grid* grid);
 

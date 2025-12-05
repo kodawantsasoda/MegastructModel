@@ -57,6 +57,7 @@ typedef struct Entity
 	Rectangle collider;
 	Rectangle scaleSprite;
 	Color colliderColor;
+	int colliderId; //make sure we deal with this being set in setup functions
 } Entity;
 
 typedef struct GameState
@@ -70,6 +71,8 @@ typedef struct GameState
 	//std::string worldName;
 	//EntityBase playerHandle;
 } GameState;
+
+extern GameState gameState;
 
 void InitZeroEntity();
 void InitGameState(Entity& defaultEntity);

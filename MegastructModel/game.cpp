@@ -15,8 +15,9 @@ void Run()
 	while (!WindowShouldClose())
 	{
 		Update();
-		int x = GetIndex(&grid, { 319, 189 });
+		int x = GetIndex(&grid, { 0, 170 });
 		//int y = GetIndexY(&grid, { 12, 30 });
+		//where pos.x = width = column #; and pos.y = height = row #
 		Vector2 pos = { (x % (int)grid.dimension) * grid.spacing, int(x / grid.dimension) * grid.spacing};
 		Rectangle rec = { pos.x, pos.y, grid.spacing, grid.spacing };
 		/*****************************************************
@@ -28,6 +29,7 @@ void Run()
 		//Draw stuff
 		Draw();
 		DrawGrid(&grid);
+		Insert(&grid, &gameState.allEntities[0]);
 		//DrawRectangle(x * grid.spacing, 0, grid.spacing, grid.spacing, WHITE);
 		DrawRectanglePro(rec, {0,0}, 1.0f, RED);
 

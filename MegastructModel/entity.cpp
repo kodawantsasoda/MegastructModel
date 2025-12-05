@@ -1,7 +1,7 @@
 #include "entity.h"
 #include "raylib.h"
 
-static GameState gameState;
+GameState gameState;
 static Entity zeroEntity;
 
 Entity* CreateEntity(EntityType type) 
