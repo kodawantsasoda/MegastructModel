@@ -171,8 +171,8 @@ void MoveCollider(Entity* entity)
 
 bool DetectCollision(Entity* entity)
 {
-	int upperBoundX = entity->collider.x + entity->collider.width;
-	int upperBoundY = entity->collider.y + entity->collider.height;
+	int upperBoundX = (int)entity->collider.x + (int)entity->collider.width;
+	int upperBoundY = (int)entity->collider.y + (int)entity->collider.height;
 
 	bool collided = false;
 

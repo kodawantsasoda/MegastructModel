@@ -19,10 +19,11 @@ int GetIndex(Grid* grid, Vector2 pos)
 	float x = sat((pos.x - grid->minBound.x) / (grid->maxBound.x - grid->minBound.x));
 	float y = sat((pos.y - grid->minBound.y) / (grid->maxBound.y - grid->minBound.y));
 	
-	x = floor(x * (grid->dimension));
-	y = floor(y * (grid->maxBound.y / grid->spacing));
+	x = (float)floor(x * (grid->dimension));
+	y = (float)floor(y * (grid->maxBound.y / grid->spacing));
 	
-	return grid->dimension * y + x;
+	//TODO::may need to adjust as we are having loss of data
+	return (int)grid->dimension * (int)y + (int)x;
 }
 
 void NewClient(Entity* entity)
@@ -55,7 +56,13 @@ void Insert(Grid* grid, Entity* entity)
 			colTemp = colMin;
 			rowTemp++;
 		}
-		DrawRectangle((colTemp * grid->spacing), rowTemp * grid->spacing, grid->spacing, grid->spacing, yellow);
+		//TODO:: will have to adjust this... we get data loss going from float to int
+		DrawRectangle(colTemp * (int)grid->spacing, rowTemp * (int)grid->spacing, (int)grid->spacing, (int)grid->spacing, yellow);
+
+		if (grid->cells[i].entityID != -1)
+		{
+			//grid->cells[i].entityID
+		}
 		colTemp++;
 	}
 }

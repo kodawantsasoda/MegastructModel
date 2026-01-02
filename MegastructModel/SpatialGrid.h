@@ -4,12 +4,21 @@
 
 #include "entity.h"
 
+const int GRID_SIZE = 60;
+
+typedef struct Cell
+{
+	int entityID;
+	//Cell nextCell;
+} Cell;
+
 typedef struct Grid
 {
 	Vector2 minBound;
 	Vector2 maxBound;
 	float dimension;
 	float spacing;
+	Cell cells[GRID_SIZE];
 } Grid;
 
 typedef struct SquareQuery

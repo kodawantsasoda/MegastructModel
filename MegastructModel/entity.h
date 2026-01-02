@@ -9,7 +9,7 @@
 #include <raymath.h>
 #include <math.h>
 
-
+const int MAX_ENTITY_CELL_SIZE = 20;
 const int MAX_ENTITIES = 3;
 const int MAX_SPRITES = 3;
 
@@ -33,7 +33,7 @@ typedef enum EntityState
 	HIT,
 	DYING,
 	DEAD,
-};
+} EnityState;
 
 typedef enum SpriteIndex
 {
@@ -58,6 +58,12 @@ typedef struct Entity
 	Rectangle scaleSprite;
 	Color colliderColor;
 	int colliderId; //make sure we deal with this being set in setup functions
+
+	//data for the spatial hash map
+	int cellMin;
+	int cellMax;
+	int cells[MAX_ENTITY_CELL_SIZE];
+	int queryID;
 } Entity;
 
 typedef struct GameState
@@ -66,8 +72,8 @@ typedef struct GameState
 	bool loadingWorld;
 	Entity allEntities[MAX_ENTITIES];
 	Texture2D allSprites[MAX_SPRITES];
-	uint64_t generatedEntityID;
-	uint64_t entityTop;
+	int generatedEntityID;
+	int entityTop;
 	//std::string worldName;
 	//EntityBase playerHandle;
 } GameState;
@@ -91,7 +97,7 @@ void SetupEnemy(Entity* entity);
 
 void MoveCollider(Entity* entity);
 bool DetectCollision(Entity* entity);
-bool OptimizedCollion(Entity* entity);
+//bool OptimizedCollion(Entity* entity);
 
 void UpdatePlayer(Entity* player);
 void UpdateEnemy(Entity* enemy);
