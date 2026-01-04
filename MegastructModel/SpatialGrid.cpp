@@ -59,12 +59,16 @@ void Insert(Grid* grid, Entity* entity)
 		//TODO:: will have to adjust this... we get data loss going from float to int
 		DrawRectangle(colTemp * (int)grid->spacing, rowTemp * (int)grid->spacing, (int)grid->spacing, (int)grid->spacing, yellow);
 
+		//do some arena work...
 		if (grid->cells[i].entityID != -1)
 		{
 			//grid->cells[i].entityID
+
 		}
 		colTemp++;
 	}
+
+	//TODO: may need to store a min and max of the entities cells for updating and such
 }
 
 //need to figure out how to draw this...
