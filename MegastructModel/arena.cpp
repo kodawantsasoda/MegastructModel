@@ -23,7 +23,8 @@ uintptr_t alignForward(uintptr_t ptr, size_t align)
 	return p;
 }
 
-void arena_init(Arena* arena, void* backingBuffer, size_t backingBufferLength) {
+void arena_init(Arena* arena, void* backingBuffer, size_t backingBufferLength) 
+{
 	arena->buffer = (unsigned char*)backingBuffer;
 	arena->bufferLength = backingBufferLength;
 	arena->currentOffset = 0;
@@ -50,6 +51,12 @@ void* arenaAlloc(Arena* arena, size_t size)
 	}
 	//arena is out of memory
 	return NULL;
+}
+
+void* arenaGetBlock(Arena* arena, size_t size, void* ptr)
+{
+	if(arena->buffer)
+	return ptr + size;
 }
 
 void arenaFree(Arena* arena)
