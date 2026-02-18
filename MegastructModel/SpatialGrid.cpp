@@ -76,6 +76,26 @@ void Insert(Grid* grid, Entity* entity)
 		//TODO:: will have to adjust this... we get data loss going from float to int
 		DrawRectangle(colTemp * (int)grid->spacing, rowTemp * (int)grid->spacing, (int)grid->spacing, (int)grid->spacing, yellow);
 
+		Cell* cell = (Cell*)arenaAlloc(&grid->arena, sizeof(Cell));
+		if (!cell)
+		{
+			printf("Error on Insert function for Spatial Hash Grid... arena is out of space?\n");
+			return;
+		}
+		//if the cell does not have a head node attached to it
+		if (!grid->cells[currentGridIndex])
+		{
+			cell->entityIndex = entity->eBase.index;
+			cell->next = NULL;
+			grid->cells[currentGridIndex] = cell;
+		}
+		//placing new head of list
+		else
+		{
+			cell->entityIndex = entity->eBase.index;
+			cell->next = grid->cells[currentGridIndex];
+			grid->cells[currentGridIndex] = cell;
+		}
 		//do some arena/linked list work...
 		/*what i need to do... so in the spatial hash grid we have cells. 
 		each index in the cell holds a head pointer to a linked list of all clients within that cell. 
@@ -85,26 +105,26 @@ void Insert(Grid* grid, Entity* entity)
 		ill reserve a spot in memory big enough to hold (possibly, depending on space...) every index in the spatial hash grid. so each
 		entity requests space in the arena of sizeof(maximum cells * entityID(int))) 
 		*/
-		if (grid->cells[currentGridIndex]->entityIndex != -1)
-		{
-			//grid->cells[currentGridIndex]->entityIndex = entity->eBase.index;
-			//arena alloc??
-			//grid->cells[currentGridIndex]->next = entity->eBase.index;
-			//grid->arena.previousOffset 
-		
-			//pushing the head to the tail essentially
-			grid->cells[currentGridIndex]->next = grid->cells[currentGridIndex];
-			grid->cells[currentGridIndex] = arenaGetBlock(&arena, sizeof)
+		//if (grid->cells[currentGridIndex]->entityIndex != -1)
+		//{
+		//	//grid->cells[currentGridIndex]->entityIndex = entity->eBase.index;
+		//	//arena alloc??
+		//	//grid->cells[currentGridIndex]->next = entity->eBase.index;
+		//	//grid->arena.previousOffset 
+		//
+		//	//pushing the head to the tail essentially
+		//	grid->cells[currentGridIndex]->next = grid->cells[currentGridIndex];
+		//	//grid->cells[currentGridIndex] = arenaGetBlock(&arena, sizeof)
 
-		}
-		else
-		{
-			//start of new cell.. arena alloc a new block of memory for the cell to use...
-			//note that max entities in cell is not a hard rule... you can go over it just may not end up being sequential after you go over
-			grid->cells[currentGridIndex] = (Cell*)arenaAlloc(&grid->arena, MAX_ENTITIES_IN_CELL * sizeof(grid->cells[currentGridIndex]));
-			grid->cells[currentGridIndex]->entityIndex = entity->eBase.index;
-			grid->cells[currentGridIndex]->next = NULL;
-		}
+		//}
+		//else
+		//{
+		//	//start of new cell.. arena alloc a new block of memory for the cell to use...
+		//	//note that max entities in cell is not a hard rule... you can go over it just may not end up being sequential after you go over
+		//	grid->cells[currentGridIndex] = (Cell*)arenaAlloc(&grid->arena, MAX_ENTITIES_IN_CELL * sizeof(grid->cells[currentGridIndex]));
+		//	grid->cells[currentGridIndex]->entityIndex = entity->eBase.index;
+		//	grid->cells[currentGridIndex]->next = NULL;
+		//}
 		colTemp++;
 	}
 

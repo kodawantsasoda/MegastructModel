@@ -53,12 +53,6 @@ void* arenaAlloc(Arena* arena, size_t size)
 	return NULL;
 }
 
-void* arenaGetBlock(Arena* arena, size_t size, void* ptr)
-{
-	if(arena->buffer)
-	return ptr + size;
-}
-
 void arenaFree(Arena* arena)
 {
 	arena->currentOffset = 0;
