@@ -1,5 +1,24 @@
 #include "game.h"
 
+void DebugSpatial(Entity* entity, Grid* grid)
+{
+	UpdateClient(grid, entity);
+	int cell = 0;
+
+	for (int i = 0; i < MAX_ENTITY_CELL_SIZE; i++)
+	{
+		cell = entity->cells[i];
+		//TODO:: will have to adjust this... we get data loss going from float to int
+		// i need to get rows and columns again.... got to figure out something more efficient for drawing... but might not be a way unfortunately.... so just add what you have already
+		DrawRectangle((cell % (int)grid->dimension) * (int)grid->spacing, (cell / (int)grid->dimension) * (int)grid->spacing, (int)grid->spacing, (int)grid->spacing, YELLOW);
+		
+		if (cell == entity->cellMax)
+		{
+			break;
+		}
+	}
+}
+
 void Run()
 {
 	window = WindowInit();
@@ -11,6 +30,8 @@ void Run()
 
 	SetTargetFPS(60);
 	SetConfigFlags(FLAG_VSYNC_HINT);
+
+	Insert(&grid, &gameState.allEntities[0]);
 	
 	while (!WindowShouldClose())
 	{
@@ -29,7 +50,9 @@ void Run()
 		//Draw stuff
 		Draw();
 		DrawGrid(&grid);
-		Insert(&grid, &gameState.allEntities[0]);
+
+		DebugSpatial(&gameState.allEntities[0], &grid);
+
 		//DrawRectangle(x * grid.spacing, 0, grid.spacing, grid.spacing, WHITE);
 		DrawRectanglePro(rec, {0,0}, 1.0f, RED);
 

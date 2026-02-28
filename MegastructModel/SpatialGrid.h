@@ -38,6 +38,7 @@ void InitGrid(Grid* grid, Vector2 minBound, Vector2 maxBound, float dimension);
 int GetIndex(Grid* grid, Vector2 pos);
 void NewClient(Entity* entity);
 void Insert(Grid* grid, Entity* entity);
+void UpdateClient(Grid* grid, Entity* entity);
 
 void DrawGrid(Grid* grid);
 

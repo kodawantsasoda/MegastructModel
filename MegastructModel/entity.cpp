@@ -90,6 +90,13 @@ void InitZeroEntity()
 		zeroEntity.eBase.id = -1;
 		zeroEntity.eBase.index = -1;
 		zeroEntity.eType = UNDEFINED;
+
+		zeroEntity.cellMin = 0;
+		zeroEntity.cellMax = 0;
+		for (int i = 0; i < MAX_ENTITY_CELL_SIZE; i++)
+		{
+			zeroEntity.cells[i] = 0;
+		}
 	}
 }
 
