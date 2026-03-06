@@ -18,15 +18,14 @@ void InitGrid(Grid* grid, Vector2 minBound, Vector2 maxBound, float dimension)
 	grid->maxBound = maxBound;
 	grid->dimension = dimension;
 	grid->spacing = (maxBound.x - minBound.x) / (dimension);
+	grid->arena = { 0 };
 
-	arena_init(&grid->arena, grid->backing_buffer, MAX_ENTITIES * sizeof(grid->cells));
+	arena_init(&grid->arena, &grid->backing_buffer, MAX_ENTITIES * sizeof(Cell) * GRID_SIZE);
 
-	Cell cell;
-	InitCell(&cell);
-	for (int i = 0; i < GRID_SIZE; i++)
+	/*for (int i = 0; i < MAX_ENTITIES * sizeof(Cell); i++)
 	{
-		grid->cells[i] = NULL;
-	}
+		grid->backing_buffer[i] = 0;
+	}*/
 }
 
 int GetIndex(Grid* grid, Vector2 pos) 
@@ -81,7 +80,7 @@ void Insert(Grid* grid, Entity* entity)
 		//TODO:: will have to adjust this... we get data loss going from float to int
 		//DrawRectangle(colTemp * (int)grid->spacing, rowTemp * (int)grid->spacing, (int)grid->spacing, (int)grid->spacing, yellow);
 
-		Cell* cell = (Cell*)arenaAlloc(&grid->arena, sizeof(Cell));
+		Cell* cell = (Cell*)arenaAlloc(&grid->arena, sizeof(cell));
 		if (!cell)
 		{
 			printf("Error on Insert function for Spatial Hash Grid... arena is out of space?\n");

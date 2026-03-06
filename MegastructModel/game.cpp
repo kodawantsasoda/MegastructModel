@@ -66,6 +66,8 @@ void Run()
 		/*END DRAWING
 		*****************************************************/
 	}
+
+	arenaFree(&grid.arena);
 	UnloadRenderTexture(window->virtualCanvas);
 	CloseWindow();
 
