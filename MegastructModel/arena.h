@@ -6,6 +6,20 @@
 #include <assert.h>
 #include <string.h>
 
+#if !defined(__cplusplus)
+#if (defined(_MSC_VER) && _MSC_VER < 1800) || (!defined(_MSC_VER) && !defined(__STDC_VERSION__))
+#ifndef true
+#define true  (0 == 0)
+#endif
+#ifndef false
+#define false (0 != 0)
+#endif
+typedef unsigned char bool;
+#else
+#include <stdbool.h>
+#endif
+#endif
+
 #ifndef DEFAULT_ALIGNMENT
 #define DEFAULT_ALIGNMENT (2 * sizeof(void *))
 #endif

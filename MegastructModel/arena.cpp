@@ -39,7 +39,7 @@ void* arenaAlloc(Arena* arena, size_t size)
 	offset -= (uintptr_t)arena->buffer; //number of bytes in our offset to play nicely with our Arena members
 
 	//checking space in backing memory. the offset is a value in address form adding to the size of the requested allocation to make sure we have room in the arena
-	if (offset + size <= arena->bufferLength)
+	if (offset + size < arena->bufferLength) //Bug Alert: the only reason why this is less than and not less than or equal to, because I want my indexes to line up with init-ing with size_t
 	{
 		void* ptr = &arena->buffer[offset];
 		arena->previousOffset = offset;
@@ -48,6 +48,10 @@ void* arenaAlloc(Arena* arena, size_t size)
 		//zero out the new memory
 		memset(ptr, 0, size);
 		return ptr;
+	}
+	else
+	{
+		int y = 0;
 	}
 	//arena is out of memory
 	return NULL;

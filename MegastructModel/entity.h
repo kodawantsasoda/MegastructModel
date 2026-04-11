@@ -91,7 +91,7 @@ void DestroyEntity(Entity* entity);
 EntityBase LinkedEntity(Entity* entity);
 Entity* LinkedBaseEntity(EntityBase eBase);
 
-void Setup();
+void SetupEntities();
 void SetupPlayer(Entity* entity);
 void SetupEnemy(Entity* entity);
 
@@ -101,7 +101,7 @@ bool DetectCollision(Entity* entity);
 
 void UpdatePlayer(Entity* player);
 void UpdateEnemy(Entity* enemy);
-void Update();
+void UpdateEntities();
 void Draw();
 //EntityBase* getEntityArray();
 

@@ -20,9 +20,9 @@ void InitGrid(Grid* grid, Vector2 minBound, Vector2 maxBound, float dimension)
 	grid->spacing = (maxBound.x - minBound.x) / (dimension);
 	grid->arena = { 0 };
 
-	arena_init(&grid->arena, &grid->backing_buffer, MAX_ENTITIES * sizeof(Cell) * GRID_SIZE);
+	arena_init(&grid->arena, &grid->backing_buffer, sizeof(Cell) * 4);
 
-	/*for (int i = 0; i < MAX_ENTITIES * sizeof(Cell); i++)
+	/*for (int i = 0; i < MAX_ENTITIES * sizeof(Cell) * GRID_SIZE; i++)
 	{
 		grid->backing_buffer[i] = 0;
 	}*/
@@ -45,7 +45,7 @@ void NewClient(Entity* entity)
 	entity->colliderId = -1;
 }
 
-void Insert(Grid* grid, Entity* entity)
+void InsertEntityInGrid(Grid* grid, Entity* entity)
 {
 	Vector2 maxPos = { entity->collider.x + entity->collider.width, entity->collider.y + entity->collider.height };
 	int minIndex = GetIndex(grid, entity->pos);
@@ -99,7 +99,7 @@ void Insert(Grid* grid, Entity* entity)
 			{
 				cell->entityIndex = entity->eBase.index;
 				cell->next = grid->cells[currentGridIndex];
-				grid->cells[currentGridIndex] = cell;
+				grid->cells[currentGridIndex] = cell; //corruption begins here!!!!!!!!!!!!!!!!!
 			}
 		}
 		
@@ -119,10 +119,43 @@ void UpdateClient(Grid* grid, Entity* entity)
 	//no change needed
 	if (entity->cellMin == minIndex && entity->cellMax == maxIndex)
 	{
+		printf("No change\n");
 		return;
 	}
+	printf("Change\n");
 	//need to add remove
-	Insert(grid, entity);
+	InsertEntityInGrid(grid, entity);
+}
+
+void RemoveEntityInGrid(Grid* grid, Entity* entity)
+{
+	for (int i = 0; i < MAX_ENTITY_CELL_SIZE; i++)
+	{
+
+		//current cell in entity cell array
+		int cellIndex = entity->cells[i];
+
+		if (cellIndex == -1)
+		{
+			//all cells accounted for, we're done and exit
+			return;
+		}
+
+		Cell* cell = grid->cells[cellIndex];
+
+		while (cell)
+		{
+			if (cell->entityIndex == entity->eBase.index)
+			{
+				//delete stuff which means point pointers to other stuff and take out this bad boy... might need to add a previous node??
+				//cell->prev->next = cell->next
+				//cell->next->prev = cell->prev
+			}
+			cell = cell->next;
+		}
+		//entity->cells[i] = -1; //maybe? if we keep this we need to change zeroEntity Init in entity.h
+		//what we also need to do is have a free list of spots in our arena in order to gain some memory back...
+	}
 }
 
 //need to figure out how to draw this...

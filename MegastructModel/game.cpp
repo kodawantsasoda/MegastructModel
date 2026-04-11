@@ -19,44 +19,55 @@ void DebugSpatial(Entity* entity, Grid* grid)
 	}
 }
 
-void Run()
+void InitGame(Game* game)
 {
 	window = WindowInit();
 	WindowOpen(window);
 
-	Grid grid;
-	InitGrid(&grid, { 0, 0 }, { (float)GetScreenWidth(), (float)GetScreenHeight() }, 10.0f);
-	Setup();
+	InitGrid(&game->grid, { 0, 0 }, { (float)GetScreenWidth(), (float)GetScreenHeight() }, 10.0f);
+
+	SetupEntities();
 
 	SetTargetFPS(60);
 	SetConfigFlags(FLAG_VSYNC_HINT);
 
-	Insert(&grid, &gameState.allEntities[0]);
+	InsertEntityInGrid(&game->grid, &gameState.allEntities[0]);
+}
+
+void Run()
+{
+	Game game;
+	InitGame(&game);
 	
 	while (!WindowShouldClose())
 	{
-		Update();
-		int x = GetIndex(&grid, { 0, 170 });
+		UpdateEntities();
+
+		int x = GetIndex(&game.grid, { 0, 170 });
 		//int y = GetIndexY(&grid, { 12, 30 });
 		//where pos.x = width = column #; and pos.y = height = row #
-		Vector2 pos = { (x % (int)grid.dimension) * grid.spacing, int(x / grid.dimension) * grid.spacing};
-		Rectangle rec = { pos.x, pos.y, grid.spacing, grid.spacing };
+		Vector2 pos = { (x % (int)game.grid.dimension) * game.grid.spacing, int(x / game.grid.dimension) * game.grid.spacing};
+		Rectangle rec = { pos.x, pos.y, game.grid.spacing, game.grid.spacing };
+		
 		/*****************************************************
 		VIRTUAL SCREEN DRAWING*/
 		BeginTextureMode(window->virtualCanvas);
 		ClearBackground(BLACK);
 		DrawCanvas(window);
 
-		//Draw stuff
+		//Draw stuff in the virtual screen
 		Draw();
-		DrawGrid(&grid);
+		DrawGrid(&game.grid);
 
-		DebugSpatial(&gameState.allEntities[0], &grid);
+		DebugSpatial(&gameState.allEntities[0], &game.grid);
 
 		//DrawRectangle(x * grid.spacing, 0, grid.spacing, grid.spacing, WHITE);
 		DrawRectanglePro(rec, {0,0}, 1.0f, RED);
 
 		EndTextureMode();
+		/*END VIRTUAL SCREEN DRAWING
+		*****************************************************/
+		
 		/*****************************************************
 		DRAWING VIRTUAL CANVAS ONTO CURRENT SCREEN RESOLUTION*/
 		BeginDrawing();
@@ -67,7 +78,7 @@ void Run()
 		*****************************************************/
 	}
 
-	arenaFree(&grid.arena);
+	//arenaFree(&grid.arena);
 	UnloadRenderTexture(window->virtualCanvas);
 	CloseWindow();
 

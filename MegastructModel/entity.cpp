@@ -95,7 +95,7 @@ void InitZeroEntity()
 		zeroEntity.cellMax = 0;
 		for (int i = 0; i < MAX_ENTITY_CELL_SIZE; i++)
 		{
-			zeroEntity.cells[i] = 0;
+			zeroEntity.cells[i] = 0; //switch to -1??
 		}
 	}
 }
@@ -131,7 +131,7 @@ void InitSprites()
 	UnloadImage(img);
 }
 
-void Setup()
+void SetupEntities()
 {
 	InitZeroEntity();
 	InitGameState(zeroEntity);
@@ -272,7 +272,7 @@ void UpdateEnemy(Entity* entity)
 	MoveCollider(entity);
 }
 
-void Update()
+void UpdateEntities()
 {
 	for (int i = 0; i < MAX_ENTITIES; i++)
 	{

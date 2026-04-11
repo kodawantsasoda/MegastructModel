@@ -8,6 +8,12 @@
 
 static Window* window;
 
+typedef struct Game
+{
+	Grid grid;
+} Game;
+
 void Run();
+void InitGame(Game* grid);
 
 #endif

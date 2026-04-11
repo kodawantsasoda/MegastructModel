@@ -22,7 +22,7 @@ typedef struct Grid
 	float spacing;
 	Cell* cells[GRID_SIZE];
 	Arena arena;
-	unsigned char backing_buffer[MAX_ENTITIES * sizeof(Cell) * GRID_SIZE];
+	unsigned char backing_buffer[sizeof(Cell) * 4];
 } Grid;
 
 typedef struct SquareQuery
@@ -37,8 +37,9 @@ float sat(float x);
 void InitGrid(Grid* grid, Vector2 minBound, Vector2 maxBound, float dimension);
 int GetIndex(Grid* grid, Vector2 pos);
 void NewClient(Entity* entity);
-void Insert(Grid* grid, Entity* entity);
+void InsertEntityInGrid(Grid* grid, Entity* entity);
 void UpdateClient(Grid* grid, Entity* entity);
+void RemoveEntityInGrid(Grid* grid, Entity* entity);
 
 void DrawGrid(Grid* grid);
 
