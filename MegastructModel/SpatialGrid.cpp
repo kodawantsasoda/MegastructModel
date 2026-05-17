@@ -10,6 +10,7 @@ void InitCell(Cell* cell)
 {
 	cell->entityIndex = -1;
 	cell->next = NULL;
+	cell->prev = NULL;
 }
 
 void InitGrid(Grid* grid, Vector2 minBound, Vector2 maxBound, float dimension)
@@ -22,6 +23,10 @@ void InitGrid(Grid* grid, Vector2 minBound, Vector2 maxBound, float dimension)
 
 	arena_init(&grid->arena, &grid->backing_buffer, sizeof(Cell) * 4);
 
+	for (int i = 0; i < GRID_SIZE; i++)
+	{
+		grid->cells[i] = NULL;
+	}
 	/*for (int i = 0; i < MAX_ENTITIES * sizeof(Cell) * GRID_SIZE; i++)
 	{
 		grid->backing_buffer[i] = 0;
@@ -92,6 +97,7 @@ void InsertEntityInGrid(Grid* grid, Entity* entity)
 			{
 				cell->entityIndex = entity->eBase.index;
 				cell->next = NULL;
+				cell->prev = NULL;
 				grid->cells[currentGridIndex] = cell;
 			}
 			//placing new head of list
@@ -99,6 +105,8 @@ void InsertEntityInGrid(Grid* grid, Entity* entity)
 			{
 				cell->entityIndex = entity->eBase.index;
 				cell->next = grid->cells[currentGridIndex];
+				cell->next->prev = cell;
+				cell->prev = NULL;
 				grid->cells[currentGridIndex] = cell; //corruption begins here!!!!!!!!!!!!!!!!!
 			}
 		}
@@ -143,13 +151,38 @@ void RemoveEntityInGrid(Grid* grid, Entity* entity)
 
 		Cell* cell = grid->cells[cellIndex];
 
+		if (!cell)
+		{
+			printf("Error on removing entity from spatial hash grid");
+			return;
+		}
+
 		while (cell)
 		{
 			if (cell->entityIndex == entity->eBase.index)
 			{
-				//delete stuff which means point pointers to other stuff and take out this bad boy... might need to add a previous node??
-				//cell->prev->next = cell->next
-				//cell->next->prev = cell->prev
+				//cell's previous pointer to another is NULL, so its at the head of the linked list
+				if (!cell->prev)
+				{
+					//no next value of head of linked list
+					if (!cell->next)
+					{
+						grid->cells[cellIndex] = NULL;
+						return;
+					}
+					cell->next->prev = NULL;
+					grid->cells[cellIndex] = cell->next;
+					//FREE it from the arena
+					//grid.arena->arenaDealloc(&grid->arena, (void*)cell, sizeof(Cell));
+					arenaDealloc(&grid->arena, cell, sizeof(Cell));
+					cell = NULL;
+				}
+				if (cell->prev)
+				{
+					//delete stuff which means point pointers to other stuff and take out this bad boy... might need to add a previous node??
+					cell->prev->next = cell->next;
+					cell->next->prev = cell->prev;
+				}
 			}
 			cell = cell->next;
 		}

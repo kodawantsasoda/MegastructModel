@@ -32,6 +32,8 @@ void InitGame(Game* game)
 	SetConfigFlags(FLAG_VSYNC_HINT);
 
 	InsertEntityInGrid(&game->grid, &gameState.allEntities[0]);
+	InsertEntityInGrid(&game->grid, &gameState.allEntities[1]);
+	InsertEntityInGrid(&game->grid, &gameState.allEntities[2]);
 }
 
 void Run()
@@ -77,6 +79,10 @@ void Run()
 		/*END DRAWING
 		*****************************************************/
 	}
+
+	RemoveEntityInGrid(&game.grid, &gameState.allEntities[0]);
+	RemoveEntityInGrid(&game.grid, &gameState.allEntities[1]);
+	RemoveEntityInGrid(&game.grid, &gameState.allEntities[2]);
 
 	//arenaFree(&grid.arena);
 	UnloadRenderTexture(window->virtualCanvas);

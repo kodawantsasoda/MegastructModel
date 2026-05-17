@@ -12,6 +12,7 @@ typedef struct Cell
 {
 	int entityIndex;
 	Cell* next;
+	Cell* prev;
 } Cell;
 
 typedef struct Grid
@@ -22,7 +23,7 @@ typedef struct Grid
 	float spacing;
 	Cell* cells[GRID_SIZE];
 	Arena arena;
-	unsigned char backing_buffer[sizeof(Cell) * 4];
+	unsigned char backing_buffer[sizeof(Cell) * 10];
 } Grid;
 
 typedef struct SquareQuery

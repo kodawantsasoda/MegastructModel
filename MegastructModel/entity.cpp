@@ -95,7 +95,7 @@ void InitZeroEntity()
 		zeroEntity.cellMax = 0;
 		for (int i = 0; i < MAX_ENTITY_CELL_SIZE; i++)
 		{
-			zeroEntity.cells[i] = 0; //switch to -1??
+			zeroEntity.cells[i] = -1; //switch to -1??
 		}
 	}
 }

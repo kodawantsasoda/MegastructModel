@@ -57,6 +57,28 @@ void* arenaAlloc(Arena* arena, size_t size)
 	return NULL;
 }
 
+void* arenaDealloc(Arena* arena, void* deallocLocation, size_t size)
+{
+	//zero out the new memory
+	//memset(deallocLocation, 0, size); might not need because of the memset in alloc already
+
+	FreeList* deallocNode = NULL;
+
+	deallocNode = (FreeList*)deallocLocation;
+	deallocNode->currentOffset = deallocNode - (FreeList*)arena;
+	deallocNode->size = size;
+
+	FreeList* node = arena->freeList;
+	while (!node->nextOffset)
+	{
+		node = arena->freeList->nextOffset;
+	}
+
+	node->nextOffset = deallocNode;
+
+	return deallocLocation;
+}
+
 void arenaFree(Arena* arena)
 {
 	arena->currentOffset = 0;
