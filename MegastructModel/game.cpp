@@ -62,7 +62,7 @@ void Run()
 		DrawGrid(&game.grid);
 
 		DebugSpatial(&gameState.allEntities[0], &game.grid);
-
+		
 		//DrawRectangle(x * grid.spacing, 0, grid.spacing, grid.spacing, WHITE);
 		DrawRectanglePro(rec, {0,0}, 1.0f, RED);
 

@@ -71,6 +71,7 @@ void InsertEntityInGrid(Grid* grid, Entity* entity)
 
 	int currentGridIndex = minIndex;
 
+	//we need to iterate in order to add THE SAME ENTITY to MULTIPLE CELLS in the spatial hash grid
 	for (int i = 0; i < dimension; i++)
 	{
 		if (colTemp > colMax)
@@ -85,7 +86,7 @@ void InsertEntityInGrid(Grid* grid, Entity* entity)
 		//TODO:: will have to adjust this... we get data loss going from float to int
 		//DrawRectangle(colTemp * (int)grid->spacing, rowTemp * (int)grid->spacing, (int)grid->spacing, (int)grid->spacing, yellow);
 
-		Cell* cell = (Cell*)arenaAlloc(&grid->arena, sizeof(cell));
+		Cell* cell = (Cell*)arenaAlloc(&grid->arena, sizeof(Cell));
 		if (!cell)
 		{
 			printf("Error on Insert function for Spatial Hash Grid... arena is out of space?\n");
@@ -103,11 +104,12 @@ void InsertEntityInGrid(Grid* grid, Entity* entity)
 			//placing new head of list
 			else
 			{
-				cell->entityIndex = entity->eBase.index;
 				cell->next = grid->cells[currentGridIndex];
-				cell->next->prev = cell;
+				cell->entityIndex = entity->eBase.index;
 				cell->prev = NULL;
-				grid->cells[currentGridIndex] = cell; //corruption begins here!!!!!!!!!!!!!!!!!
+				//cell->next->prev = cell;
+				grid->cells[currentGridIndex] = cell;
+				 //corruption begins here!!!!!!!!!!!!!!!!!
 			}
 		}
 		
