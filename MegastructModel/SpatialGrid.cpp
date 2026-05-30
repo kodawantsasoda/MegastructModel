@@ -107,7 +107,7 @@ void InsertEntityInGrid(Grid* grid, Entity* entity)
 				cell->next = grid->cells[currentGridIndex];
 				cell->entityIndex = entity->eBase.index;
 				cell->prev = NULL;
-				//cell->next->prev = cell;
+				cell->next->prev = cell;
 				grid->cells[currentGridIndex] = cell;
 				 //corruption begins here!!!!!!!!!!!!!!!!!
 			}
