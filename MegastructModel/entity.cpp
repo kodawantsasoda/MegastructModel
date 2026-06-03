@@ -229,7 +229,6 @@ bool DetectCollision(Entity* entity)
 	return false;
 }
 
-
 void UpdatePlayer(Entity* player)
 {
 	Vector2 newPos = { 0,0 };

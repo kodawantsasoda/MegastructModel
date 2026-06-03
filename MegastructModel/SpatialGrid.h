@@ -23,7 +23,7 @@ typedef struct Grid
 	float spacing;
 	Cell* cells[GRID_SIZE];
 	Arena arena;
-	unsigned char backing_buffer[sizeof(Cell) * 10];
+	unsigned char backing_buffer[sizeof(Cell) * 20];
 } Grid;
 
 typedef struct SquareQuery

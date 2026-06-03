@@ -29,10 +29,23 @@ void arena_init(Arena* arena, void* backingBuffer, size_t backingBufferLength)
 	arena->bufferLength = backingBufferLength;
 	arena->currentOffset = 0;
 	arena->previousOffset = 0;
+	arena ->freeList = NULL;
 }
 
 void* arenaAlloc(Arena* arena, size_t size)
 {
+	FreeList* node = arena->freeList;
+	while (node)
+	{
+		if (size < node->currentOffset + node->size)
+		{
+			//not sure if it needs to get aligned? if it already got aligned via the first alloc? not sure....
+			void* ptr = &arena->buffer[node->currentOffset];
+			memset(ptr, 0, size);
+			return ptr;
+		}
+		node = node->nextOffset;
+	}
 	//alignning forward
 	uintptr_t currentPointer = (uintptr_t)arena->buffer + (uintptr_t)arena->currentOffset; //this is just arena's address + the number of bytes already used in our arena
 	uintptr_t offset = alignForward(currentPointer, DEFAULT_ALIGNMENT); //the address of the current pointer after alignment
@@ -48,10 +61,6 @@ void* arenaAlloc(Arena* arena, size_t size)
 		//zero out the new memory
 		memset(ptr, 0, size);
 		return ptr;
-	}
-	else
-	{
-		int y = 0;
 	}
 	//arena is out of memory
 	return NULL;
@@ -69,7 +78,13 @@ void* arenaDealloc(Arena* arena, void* deallocLocation, size_t size)
 	deallocNode->size = size;
 
 	FreeList* node = arena->freeList;
-	while (!node->nextOffset)
+	
+	if (!node)
+	{
+		return deallocLocation;
+	}
+
+	while (node->nextOffset)
 	{
 		node = arena->freeList->nextOffset;
 	}

@@ -45,6 +45,11 @@ void Run()
 	{
 		UpdateEntities();
 
+		if (IsKeyDown(KEY_SPACE))
+		{
+			//RemoveEntityInGrid(&game.grid, &gameState.allEntities[0]);
+		}
+
 		int x = GetIndex(&game.grid, { 0, 170 });
 		//int y = GetIndexY(&grid, { 12, 30 });
 		//where pos.x = width = column #; and pos.y = height = row #
