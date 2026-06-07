@@ -1,5 +1,7 @@
 #include "game.h"
 
+Color yellow = { 255, 255, 0, 100 };
+
 void DebugSpatial(Entity* entity, Grid* grid)
 {
 	UpdateClient(grid, entity);
@@ -10,7 +12,7 @@ void DebugSpatial(Entity* entity, Grid* grid)
 		cell = entity->cells[i];
 		//TODO:: will have to adjust this... we get data loss going from float to int
 		// i need to get rows and columns again.... got to figure out something more efficient for drawing... but might not be a way unfortunately.... so just add what you have already
-		DrawRectangle((cell % (int)grid->dimension) * (int)grid->spacing, (cell / (int)grid->dimension) * (int)grid->spacing, (int)grid->spacing, (int)grid->spacing, YELLOW);
+		DrawRectangle((cell % (int)grid->dimension) * (int)grid->spacing, (cell / (int)grid->dimension) * (int)grid->spacing, (int)grid->spacing, (int)grid->spacing, yellow);
 		
 		if (cell == entity->cellMax)
 		{

@@ -140,7 +140,6 @@ void RemoveEntityInGrid(Grid* grid, Entity* entity)
 {
 	for (int i = 0; i < MAX_ENTITY_CELL_SIZE; i++)
 	{
-
 		//current cell in entity cell array
 		int cellIndex = entity->cells[i];
 
@@ -165,19 +164,40 @@ void RemoveEntityInGrid(Grid* grid, Entity* entity)
 				//cell's previous pointer to another is NULL, so its at the head of the linked list
 				if (!cell->prev)
 				{
-					//no next value of head of linked list
+					//no next value at head of linked list
 					if (!cell->next)
 					{
 						grid->cells[cellIndex] = NULL;
 						return;
 					}
+					else
+					{
+						
+					}
+					//making a new head of the linked list
 					cell->next->prev = NULL;
 					grid->cells[cellIndex] = cell->next;
-					//FREE it from the arena
-					//grid.arena->arenaDealloc(&grid->arena, (void*)cell, sizeof(Cell));
-					arenaDealloc(&grid->arena, cell, sizeof(Cell));
-					cell = NULL;
+					//return;
 				}
+				//not the head of list ie other nodes in list
+				else
+				{
+					if (cell->next)
+					{
+						cell->prev->next = cell->next;
+						cell->next->prev = cell->prev;
+					}
+					else
+					{
+						cell->prev->next = NULL;
+					}
+				}
+				//freeing cell
+				cell->prev = NULL;
+				cell->next = NULL;
+				arenaDealloc(&grid->arena, cell, sizeof(Cell));
+				cell = NULL;
+				break;
 			}
 			else
 			{
