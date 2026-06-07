@@ -148,6 +148,7 @@ void SetupEntities()
 	Entity* enemy2;
 	enemy2 = CreateEntity(ENEMY);
 	enemy2->pos = { 50, 50 };
+	enemy2->collider = { enemy2->pos.x, enemy2->pos.y, 26, 16 };
 }
 
 void SetupPlayer(Entity* entity)
