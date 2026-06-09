@@ -21,7 +21,7 @@ void InitGrid(Grid* grid, Vector2 minBound, Vector2 maxBound, float dimension)
 	grid->spacing = (maxBound.x - minBound.x) / (dimension);
 	grid->arena = { 0 };
 
-	arena_init(&grid->arena, &grid->backing_buffer, sizeof(Cell) * 20);
+	arena_init(&grid->arena, &grid->backing_buffer, sizeof(Cell) * 25);
 
 	for (int i = 0; i < GRID_SIZE; i++)
 	{

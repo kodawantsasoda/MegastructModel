@@ -37,12 +37,12 @@ void* arenaAlloc(Arena* arena, size_t size)
 	FreeList* node = arena->freeList;
 	while (node)
 	{
-		if (size < node->currentOffset + node->size)
+		if (size <= node->currentOffset + node->size)
 		{
 			//not sure if it needs to get aligned? if it already got aligned via the first alloc? not sure....
 			void* ptr = &arena->buffer[node->currentOffset];
-			memset(ptr, 0, size);
 			arena->freeList = node->nextOffset;
+			memset(ptr, 0, size);
 			return ptr;
 		}
 		node = node->nextOffset;
