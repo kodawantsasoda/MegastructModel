@@ -153,8 +153,8 @@ void RemoveEntityInGrid(Grid* grid, Entity* entity)
 
 		if (!cell)
 		{
-			printf("Error on removing entity from spatial hash grid");
-			return;
+			//printf("Error on removing entity from spatial hash grid\n");
+			//return;
 		}
 
 		while (cell)
@@ -168,16 +168,13 @@ void RemoveEntityInGrid(Grid* grid, Entity* entity)
 					if (!cell->next)
 					{
 						grid->cells[cellIndex] = NULL;
-						return;
 					}
 					else
 					{
-						
+						//making a new head of the linked list
+						cell->next->prev = NULL;
+						grid->cells[cellIndex] = cell->next;
 					}
-					//making a new head of the linked list
-					cell->next->prev = NULL;
-					grid->cells[cellIndex] = cell->next;
-					//return;
 				}
 				//not the head of list ie other nodes in list
 				else

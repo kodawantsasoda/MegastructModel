@@ -34,8 +34,8 @@ void InitGame(Game* game)
 	SetConfigFlags(FLAG_VSYNC_HINT);
 
 	InsertEntityInGrid(&game->grid, &gameState.allEntities[0]);
-	InsertEntityInGrid(&game->grid, &gameState.allEntities[1]);
-	InsertEntityInGrid(&game->grid, &gameState.allEntities[2]);
+	//InsertEntityInGrid(&game->grid, &gameState.allEntities[1]);
+	//InsertEntityInGrid(&game->grid, &gameState.allEntities[2]);
 }
 
 void Run()

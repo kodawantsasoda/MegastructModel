@@ -60,7 +60,7 @@ void* arenaAlloc(Arena* arena, size_t size)
 		arena->currentOffset = offset + size;
 
 		//zero out the new memory
-		memset(ptr, 0, size);
+		//memset(ptr, 0, size);
 		return ptr;
 	}
 	//arena is out of memory
